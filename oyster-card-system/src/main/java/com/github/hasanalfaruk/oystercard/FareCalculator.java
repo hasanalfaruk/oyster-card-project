@@ -12,6 +12,10 @@ public class FareCalculator {
     private static final double BUS_FARE = 1.80;
     private static final double MAX_FARE = 3.20;
 
+    public static double getMaxFare() {
+        return MAX_FARE;
+    }
+
     public double calculateFare(Journey journey) {
         if (journey.isBusJourney()) {
             return BUS_FARE;
