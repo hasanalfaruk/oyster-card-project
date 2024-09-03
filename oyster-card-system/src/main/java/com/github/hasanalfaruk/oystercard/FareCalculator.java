@@ -49,20 +49,16 @@ public class FareCalculator {
         else if (zoneDifference == 0) {
             return ONE_ZONE_OUTSIDE_ZONE_1_FARE; 
         } 
-        // £2.50 fare for crossing 1 zone including Zone 1
-        else if (includesZone1 && zoneDifference == 1) {
-            return ZONE_1_ONLY_FARE;  
-        } 
         // £2.00 fare for crossing 1 zone outside Zone 1
-        else if (!includesZone1 && zoneDifference == 1) {
+        else if (!includesZone1 && zoneDifference == 0) {
             return ONE_ZONE_OUTSIDE_ZONE_1_FARE;  
         } 
         // £3.00 fare for travlleing two zones including Zone 1
-        else if (includesZone1 && zoneDifference == 2) {
+        else if (includesZone1 && zoneDifference == 1) {
             return TWO_ZONES_INCLUDING_ZONE_1_FARE;  
         } 
         // £2.25 fare for travelling two zones excluding Zone 1
-        else if (!includesZone1 && zoneDifference == 2) {
+        else if (!includesZone1 && zoneDifference == 1) {
             return TWO_ZONES_EXCLUDING_ZONE_1_FARE;  
         } 
         else if (zoneDifference == 3) {
