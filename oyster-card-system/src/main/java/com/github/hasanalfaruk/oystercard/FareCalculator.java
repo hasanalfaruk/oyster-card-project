@@ -23,23 +23,50 @@ public class FareCalculator {
 
         Set<Integer> startZones = journey.getStartStation().getZones();
         Set<Integer> endZones = journey.getEndStation().getZones();
+        double minimumFare = MAX_FARE; 
 
-        if (startZones.contains(1) && endZones.contains(1) && startZones.size() == 1 && endZones.size() == 1) {
-            return ZONE_1_ONLY_FARE;
-        }
-
-        if (startZones.contains(1) || endZones.contains(1)) {
-            if (startZones.size() == 1 && endZones.size() == 1) {
-                return TWO_ZONES_INCLUDING_ZONE_1_FARE;
+        // Calculate all possible fares based on the zone combinations
+        for (int startZone : startZones) {
+            for (int endZone : endZones) {
+                double fare = calculateFareForZoneCombination(startZone, endZone);
+                minimumFare = Math.min(minimumFare, fare); // Keep the minimum fare
             }
-            return ONE_ZONE_OUTSIDE_ZONE_1_FARE;
         }
+        // Return the minimum possible fare for stations spanning multiple zones
+        return minimumFare;
+    }
 
-        int zoneDifference = Math.abs(startZones.iterator().next() - endZones.iterator().next());
-        if (zoneDifference == 1) {
-            return TWO_ZONES_EXCLUDING_ZONE_1_FARE;
-        } else if (zoneDifference == 2) {
-            return THREE_ZONES_FARE;
+    private double calculateFareForZoneCombination(int startZone, int endZone) {
+
+        boolean includesZone1 = (startZone == 1 || endZone == 1);
+        int zoneDifference = Math.abs(startZone - endZone);
+
+        // £2.50 fare for travel within Zone 1
+        if (startZone == endZone && includesZone1) {
+            return ZONE_1_ONLY_FARE;  
+        } 
+        // £2.00 fare for travel in the same zone outside Zone 1
+        else if (zoneDifference == 0) {
+            return ONE_ZONE_OUTSIDE_ZONE_1_FARE; 
+        } 
+        // £2.50 fare for crossing 1 zone including Zone 1
+        else if (includesZone1 && zoneDifference == 1) {
+            return ZONE_1_ONLY_FARE;  
+        } 
+        // £2.00 fare for crossing 1 zone outside Zone 1
+        else if (!includesZone1 && zoneDifference == 1) {
+            return ONE_ZONE_OUTSIDE_ZONE_1_FARE;  
+        } 
+        // £3.00 fare for travlleing two zones including Zone 1
+        else if (includesZone1 && zoneDifference == 2) {
+            return TWO_ZONES_INCLUDING_ZONE_1_FARE;  
+        } 
+        // £2.25 fare for travelling two zones excluding Zone 1
+        else if (!includesZone1 && zoneDifference == 2) {
+            return TWO_ZONES_EXCLUDING_ZONE_1_FARE;  
+        } 
+        else if (zoneDifference == 3) {
+            return THREE_ZONES_FARE;  
         }
 
         return MAX_FARE;

@@ -55,7 +55,7 @@ public class JourneyService {
         for (String detail : journeyDetails) {
             System.out.println(detail);
         }
-        System.out.println("Remaining Balance: £" + oysterCard.getBalance());
+        System.out.println("Remaining Balance: £" + String.format("%.2f", oysterCard.getBalance()));
     }
 
 }
